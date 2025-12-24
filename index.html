@@ -16,9 +16,10 @@
             background-size: 20px 20px;
             margin: 0;
             font-family: 'Nunito', sans-serif;
-            /* FIX: LOCK SCROLLING INITIALLY */
+            /* Scroll Lock for Start Screen */
             overflow: hidden; 
             color: #333;
+            -webkit-tap-highlight-color: transparent; /* Removes blue highlight on tap */
         }
 
         /* --- START SCREEN (Dedication) --- */
@@ -33,16 +34,17 @@
             align-items: center;
             text-align: center;
             padding: 20px;
+            box-sizing: border-box; /* Ensures padding doesn't widen screen */
             transition: opacity 1s ease;
         }
 
         .dedication-text {
             font-family: 'Indie Flower', cursive;
-            font-size: 1.3rem;
+            font-size: 1.2rem; /* Mobile friendly size */
             color: #555;
             margin-bottom: 30px;
-            max-width: 500px;
-            line-height: 1.6;
+            max-width: 90%;
+            line-height: 1.5;
         }
 
         .start-btn {
@@ -86,6 +88,11 @@
             animation-play-state: paused;
         }
 
+        /* Mobile Font Adjustment */
+        @media (max-width: 600px) {
+            .intro-text { font-size: 2rem; }
+        }
+
         .intro-text:nth-child(1) { animation-delay: 0.5s; }
         .intro-text:nth-child(2) { animation-delay: 1.5s; }
         .intro-text:nth-child(3) { animation-delay: 2.5s; color: #ff6b6b; font-weight: bold; }
@@ -105,7 +112,7 @@
 
         /* --- SECTION 2: TIMELINE LAYOUT --- */
         #envelope-section {
-            padding: 50px 20px;
+            padding: 50px 15px; /* Less side padding on mobile */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -158,20 +165,26 @@
             justify-content: center;
         }
 
+        /* --- MOBILE LAYOUT ADJUSTMENTS --- */
         @media (max-width: 768px) {
-            #envelope-section::before { left: 5%; }
+            #envelope-section::before { left: 5%; } /* Move line to the left edge */
+            
             .timeline-row {
                 flex-direction: column;
-                gap: 20px;
-                margin-bottom: 40px;
+                gap: 30px;
+                margin-bottom: 50px;
+                align-items: center;
             }
+            
             .row-side {
                 width: 100%;
                 justify-content: center;
-                padding-left: 30px;
+                padding-left: 0;
             }
+
+            /* Adjust Start Screen Text for small screens */
             .dedication-text {
-                font-size: 1.1rem;
+                font-size: 1.1rem; 
             }
         }
 
@@ -182,7 +195,7 @@
             align-items: center;
             cursor: pointer;
             transition: transform 0.3s;
-            width: 320px; 
+            width: 320px; /* Default Desktop Width */
         }
         .envelope-wrapper:hover { transform: scale(1.05); }
 
@@ -233,7 +246,6 @@
         .letter {
             position: absolute; bottom: 0; left: 50%;
             transform: translateX(-50%);
-            /* Prevents sides from peeking out */
             width: 240px; 
             height: 160px;
             background: white; border: 1px solid #eee;
@@ -247,20 +259,46 @@
             overflow: hidden; 
         }
 
-        /* Content is invisible until envelope opens */
         .letter-content {
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
+        /* --- MOBILE ENVELOPE RESIZING --- */
+        @media (max-width: 480px) {
+            .envelope-wrapper { width: 290px; } /* Slightly smaller container */
+            
+            .envelope { width: 270px; height: 170px; }
+            
+            /* Recalculate Triangle Borders for smaller size */
+            .flap { 
+                border-left-width: 135px; 
+                border-right-width: 135px; 
+                border-top-width: 100px; 
+            }
+            .pocket { 
+                border-left-width: 135px; 
+                border-right-width: 135px; 
+                border-bottom-width: 110px; 
+            }
+            .letter { width: 230px; height: 140px; }
+            
+            /* Adjust pop-up height for mobile */
+            .envelope-wrapper.open .letter { bottom: 80px; }
+        }
+
         .envelope-wrapper.open .flap { transform: rotateX(180deg); z-index: 0; }
         .envelope-wrapper.open .letter { bottom: 100px; z-index: 4; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        
         .envelope-wrapper.open .letter .letter-content { 
             opacity: 1; 
             transform: translateY(0); 
             transition-delay: 0.4s; 
+        }
+
+        /* --- MOBILE OPEN STATE ADJUSTMENT --- */
+        @media (max-width: 480px) {
+             .envelope-wrapper.open .letter { bottom: 80px; }
         }
 
         /* --- PHOTO FRAME STYLES --- */
@@ -271,6 +309,7 @@
             transform: rotate(-2deg); 
             transition: transform 0.3s;
             max-width: 280px;
+            width: 100%; /* Flexible on mobile */
             text-align: center;
             border: 1px solid #eee;
         }
@@ -306,15 +345,17 @@
             align-items: center;
             flex-direction: column;
             backdrop-filter: blur(5px);
+            padding: 20px; /* Padding for mobile edges */
+            box-sizing: border-box;
         }
         
         #lightbox-content {
             background: white;
-            padding: 40px;
+            padding: 30px 25px;
             border-radius: 5px;
             max-width: 600px; 
-            width: 90%;
-            max-height: 85vh;
+            width: 100%; /* Full width in container */
+            max-height: 80vh;
             overflow-y: auto;
             text-align: left; 
             box-shadow: 0 0 30px rgba(0,0,0,0.5);
@@ -339,7 +380,7 @@
             font-family: 'Indie Flower', cursive; 
             color: #333; 
             margin-top: 10px; 
-            font-size: 2rem;
+            font-size: 1.8rem;
             text-align: center;
             border-bottom: 2px dashed #eee;
             padding-bottom: 10px;
@@ -347,9 +388,9 @@
 
         #lightbox-text {
             font-family: 'Nunito', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #444;
-            line-height: 1.8;
+            line-height: 1.7;
             white-space: pre-wrap;
             margin-top: 20px;
         }
@@ -359,10 +400,10 @@
             background: transparent;
             color: white;
             border: 2px solid white;
-            padding: 8px 30px;
+            padding: 10px 40px;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: 0.2s;
         }
         #close-btn:hover { background: white; color: black; }
@@ -404,7 +445,7 @@
     <div id="intro-container">
         <div class="intro-text">1 Year of Us</div>
         <div class="intro-text">1 Year of Knowing</div>
-        <div class="intro-text">Still choosing you — always.</div>
+        <div class="intro-text">Still My Choice.</div>
         
         <div class="scroll-hint">
             (Scroll Down &darr;)
@@ -415,7 +456,7 @@
         <div class="grid-container" id="gridTarget"></div>
         
         <p style="text-align: center; margin-top: 100px; font-family: 'Indie Flower', cursive; font-size: 1.5rem; color: #888; z-index:2;">
-            I would still choose you. ❤️
+            I would still choose you for eternity. ❤️
         </p>
     </div>
 
@@ -437,91 +478,91 @@
                 title: "Where It All Began", 
                 subtitle: "(The start, curiosity, and the first connection)",
                 img: "1.jpg", 
-                letter: `My Aya,\n\nThis letter belongs to the beginning—\nnot the kind that arrives loudly,\nbut the kind that starts with a simple hello.\n\nI didn’t know much then.\nOnly your name, a few words,\nand the feeling that something calm was forming in between.\nNo expectations, no plans—\njust getting to know the person behind the words.\n\nSome beginnings don’t rush.\nThey breathe.\nThey wait.\n\nThat first month wasn’t about depth yet,\nbut about presence.\nAbout listening more than speaking.\nAbout learning how someone smiles through sentences,\nand how silence doesn’t always mean distance.\n\n“In their hearts humans plan their course,\nbut the Lord establishes their steps.”\n— Proverbs 16:9\n\nLooking back now, I see how God was already working—\nquietly placing moments where neither of us forced anything.\nJust enough to feel safe.\nJust enough to stay.\n\nA name became familiar.\nA voice became gentle.\nAnd time began to slow.\n\nI thank God for beginnings like this—\nuncomplicated, sincere, and honest.\nThe kind that don’t promise forever,\nbut still choose to show up.\n\n“He has made everything beautiful in its time.”\n— Ecclesiastes 3:11\n\nThis is where our story opened.\nNot with certainty,\nbut with grace.\n\n— Lloyd`
+                letter: `Aya,\n\nThis letter belongs to the beginning—\nnot the kind that arrives loudly,\nbut the kind that starts with a simple hello.\n\nI didn’t know much then.\nOnly your name, a few words,\nand the feeling that something calm was forming in between.\nNo expectations, no plans—\njust getting to know the person behind the words.\n\nSome beginnings don’t rush.\nThey breathe.\nThey wait.\n\nThat first month wasn’t about depth yet,\nbut about presence.\nAbout listening more than speaking.\nAbout learning how someone smiles through sentences,\nand how silence doesn’t always mean distance.\n\n“In their hearts humans plan their course,\nbut the Lord establishes their steps.”\n— Proverbs 16:9\n\nLooking back now, I see how God was already working—\nquietly placing moments where neither of us forced anything.\nJust enough to feel safe.\nJust enough to stay.\n\nA name became familiar.\nA voice became gentle.\nAnd time began to slow.\n\nI thank God for beginnings like this—\nuncomplicated, sincere, and honest.\nThe kind that don’t promise forever,\nbut still choose to show up.\n\n“He has made everything beautiful in its time.”\n— Ecclesiastes 3:11\n\nThis is where our story opened.\nNot with certainty,\nbut with grace.\n\n— Lloyd`
             },
             { 
                 label: "Month 2", 
                 title: "Saying What I Felt", 
                 subtitle: "(The confession, honesty, and choosing to stay)",
                 img: "2.jpg", 
-                letter: `My Aya,\n\nBy the second month, something had changed in me.\nI didn’t fully understand it yet—\nonly that my thoughts kept returning to you\nin quiet, unannounced ways.\n\nI wasn’t brave.\nI was unsure.\nBut the feeling stayed, and silence started to feel heavier than truth.\nSo I did what I didn’t plan to do—\nI spoke.\n\nSome words aren’t rehearsed,\nthey rise because they have to.\nNot to claim,\nbut to be honest.\n\nThat confession wasn’t perfect.\nIt wasn’t confident.\nIt didn’t come with expectations.\nIt came from a place of sincerity—\nbecause I believed that honesty mattered more than fear.\n\nI didn’t know what would come after.\nI only knew that carrying it alone didn’t feel right anymore.\nAnd even if the outcome was uncertain,\nI trusted that doing the right thing mattered.\n\n“The Lord detests lying lips,\nbut He delights in people who are trustworthy.”\n— Proverbs 12:22\n\nThat moment taught me something important:\nthat courage isn’t loud.\nSometimes it’s just choosing truth\neven when your hands are shaking.\n\nI didn’t confess to bind you,\nonly to free my heart.\nWhatever followed,\nI placed it in God’s hands.\n\nAnd I still do.\n\n— Lloyd`
+                letter: `Aya,\n\nBy the second month, something had changed in me.\nI didn’t fully understand it yet—\nonly that my thoughts kept returning to you\nin quiet, unannounced ways.\n\nI wasn’t brave.\nI was unsure.\nBut the feeling stayed, and silence started to feel heavier than truth.\nSo I did what I didn’t plan to do—\nI spoke.\n\nSome words aren’t rehearsed,\nthey rise because they have to.\nNot to claim,\nbut to be honest.\n\nThat confession wasn’t perfect.\nIt wasn’t confident.\nIt didn’t come with expectations.\nIt came from a place of sincerity—\nbecause I believed that honesty mattered more than fear.\n\nI didn’t know what would come after.\nI only knew that carrying it alone didn’t feel right anymore.\nAnd even if the outcome was uncertain,\nI trusted that doing the right thing mattered.\n\n“The Lord detests lying lips,\nbut He delights in people who are trustworthy.”\n— Proverbs 12:22\n\nThat moment taught me something important:\nthat courage isn’t loud.\nSometimes it’s just choosing truth\neven when your hands are shaking.\n\nI didn’t confess to bind you,\nonly to free my heart.\nWhatever followed,\nI placed it in God’s hands.\n\nAnd I still do.\n\n— Lloyd`
             },
             { 
                 label: "Month 3", 
                 title: "Learning to Focus on You", 
                 subtitle: "(Growing attachment, small jealousy, and choosing presence)",
                 img: "3.jpg", 
-                letter: `My Aya,\n\nBy the third month, I was learning something new—\nhow to stay without crossing lines,\nhow to care without demanding answers,\nhow to wait without disappearing.\n\nWaiting isn’t empty.\nIt teaches restraint.\nIt teaches respect.\nAnd slowly, it taught me how to choose you quietly,\nwithout needing to be loud about it.\n\nNot all patience is silence,\nsome of it is loyalty learned in stillness.\n\nI’ll be honest—\nthere were moments of jealousy.\nJust a little.\nThe kind that sneaks in when you share stories\nabout people you’ve encountered,\nnames that came before me.\nKwkwkw.\n\nBut then I’d stop and think—\nguess who I’m talking to right now? :P\n\nAnd somehow, that was enough.\n\nThat jealousy didn’t turn into control.\nIt turned into self-checking.\nA reminder that caring doesn’t mean owning,\nand liking someone doesn’t give the right to limit them.\n\n“Love is patient, love is kind.\nIt does not envy, it does not boast.”\n— 1 Corinthians 13:4\n\nSo I stayed—\nnot as someone competing with your past,\nbut as someone present in your now.\nLearning where I stand,\nand being okay with standing there.\n\nWaiting shaped me,\nnot weakened me.\nAnd choosing respect,\nfelt like choosing the right kind of love.\n\nThat month taught me this:\nthat staying doesn’t always look dramatic.\nSometimes it just looks like consistency,\na message sent,\na boundary honored,\na heart learning to be steady.\n\n— Lloyd`
+                letter: `Aya,\n\nBy the third month, I was learning something new—\nhow to stay without crossing lines,\nhow to care without demanding answers,\nhow to wait without disappearing.\n\nWaiting isn’t empty.\nIt teaches restraint.\nIt teaches respect.\nAnd slowly, it taught me how to choose you quietly,\nwithout needing to be loud about it.\n\nNot all patience is silence,\nsome of it is loyalty learned in stillness.\n\nI’ll be honest—\nthere were moments of jealousy.\nJust a little.\nThe kind that sneaks in when you share stories\nabout people you’ve encountered,\nnames that came before me.\nKwkwkw.\n\nBut then I’d stop and think—\nguess who I’m talking to right now? :P\n\nAnd somehow, that was enough.\n\nThat jealousy didn’t turn into control.\nIt turned into self-checking.\nA reminder that caring doesn’t mean owning,\nand liking someone doesn’t give the right to limit them.\n\n“Love is patient, love is kind.\nIt does not envy, it does not boast.”\n— 1 Corinthians 13:4\n\nSo I stayed—\nnot as someone competing with your past,\nbut as someone present in your now.\nLearning where I stand,\nand being okay with standing there.\n\nWaiting shaped me,\nnot weakened me.\nAnd choosing respect,\nfelt like choosing the right kind of love.\n\nThat month taught me this:\nthat staying doesn’t always look dramatic.\nSometimes it just looks like consistency,\na message sent,\na boundary honored,\na heart learning to be steady.\n\n— Lloyd`
             },
             { 
                 label: "Month 4", 
                 title: "Listening, Learning, and Growing", 
                 subtitle: "(Paying attention, remembering what you love, and being intentional)",
                 img: "4.jpg",
-                letter: `My Aya,\n\nBy the fourth month, something softened between us.\nConversations didn’t feel careful anymore—\nthey felt comfortable.\nSilence wasn’t awkward,\nand laughter came without effort.\n\nI noticed it in small things.\nHow replying didn’t feel like thinking anymore.\nHow being myself felt enough.\nHow trust doesn’t announce itself—\nit simply arrives.\n\nSome connections don’t deepen suddenly,\nthey unfold.\nSlowly.\nHonestly.\n\nI wasn’t trying to prove anything by then.\nI wasn’t counting days or waiting for signs.\nI was just there—\nand for the first time, that felt natural.\n\nTrust grew in simple ways:\nin listening,\nin respecting what you weren’t ready to give,\nin choosing consistency over intensity.\n\n“Let love and faithfulness never leave you;\nbind them around your neck,\nwrite them on the tablet of your heart.”\n— Proverbs 3:3\n\nThat month taught me that closeness doesn’t come from pushing forward,\nbut from staying aligned.\nFrom being present without pressure.\nFrom letting someone be who they are—\nand being okay with who you are beside them.\n\nI wasn’t rushing anymore.\nI wasn’t holding back either.\nI was learning balance.\n\nAnd I thanked God for that—\nfor teaching me that real connection grows best\nwhen it’s rooted in peace,\nnot fear of losing.\n\nMonth four didn’t change everything.\nBut it made things feel real.\n\n— Lloyd`
+                letter: `Aya,\n\nBy the fourth month, something softened between us.\nConversations didn’t feel careful anymore—\nthey felt comfortable.\nSilence wasn’t awkward,\nand laughter came without effort.\n\nI noticed it in small things.\nHow replying didn’t feel like thinking anymore.\nHow being myself felt enough.\nHow trust doesn’t announce itself—\nit simply arrives.\n\nSome connections don’t deepen suddenly,\nthey unfold.\nSlowly.\nHonestly.\n\nI wasn’t trying to prove anything by then.\nI wasn’t counting days or waiting for signs.\nI was just there—\nand for the first time, that felt natural.\n\nTrust grew in simple ways:\nin listening,\nin respecting what you weren’t ready to give,\nin choosing consistency over intensity.\n\n“Let love and faithfulness never leave you;\nbind them around your neck,\nwrite them on the tablet of your heart.”\n— Proverbs 3:3\n\nThat month taught me that closeness doesn’t come from pushing forward,\nbut from staying aligned.\nFrom being present without pressure.\nFrom letting someone be who they are—\nand being okay with who you are beside them.\n\nI wasn’t rushing anymore.\nI wasn’t holding back either.\nI was learning balance.\n\nAnd I thanked God for that—\nfor teaching me that real connection grows best\nwhen it’s rooted in peace,\nnot fear of losing.\n\nMonth four didn’t change everything.\nBut it made things feel real.\n\n— Lloyd`
             },
             { 
                 label: "Month 5", 
                 title: "Finding God Along the Way", 
                 subtitle: "(Faith, guidance, and walking toward Him together)",
                 img: "5.jpg",
-                letter: `My Aya,\n\nBy the fifth month, I realized how much I was noticing the little things about you.\nEvery smile, every story, every detail you shared found a place in my notes.\nThe places you liked, the things that made you laugh—\nI held onto them all, even if I couldn’t always mention them.\n\nSome memories live in quiet corners,\nnot to be shown,\nbut to be treasured.\n\nDuring our calls, I was so focused on you—\nlistening, learning, remembering.\nI didn’t just want to hear;\nI wanted to understand.\nAnd in the process, I found myself learning more about God too.\n\nYou showed me His ways not just in words,\nbut in how you live,\nhow you speak,\nhow you care.\nBecause of you, I grew curious.\nI asked questions, I read more,\nI felt the pull to walk closer to Him.\n\n“Your word is a lamp to my feet and a light to my path.”\n— Psalm 119:105\n\nThis month taught me that love isn’t just about noticing people—it’s about learning from them.\nAbout how one heart can lead another to grow,\nnot only together,\nbut in faith and understanding.\n\nI carry your words and smiles in my notes,\nand God’s teachings in my heart.\nEverything feels brighter because of you.\n\nMonth five wasn’t just about us—it was about discovering Him through you,\nand finding my own way closer to His light.\n\n— Lloyd`
+                letter: `Aya,\n\nBy the fifth month, I realized how much I was noticing the little things about you.\nEvery smile, every story, every detail you shared found a place in my notes.\nThe places you liked, the things that made you laugh—\nI held onto them all, even if I couldn’t always mention them.\n\nSome memories live in quiet corners,\nnot to be shown,\nbut to be treasured.\n\nDuring our calls, I was so focused on you—\nlistening, learning, remembering.\nI didn’t just want to hear;\nI wanted to understand.\nAnd in the process, I found myself learning more about God too.\n\nYou showed me His ways not just in words,\nbut in how you live,\nhow you speak,\nhow you care.\nBecause of you, I grew curious.\nI asked questions, I read more,\nI felt the pull to walk closer to Him.\n\n“Your word is a lamp to my feet and a light to my path.”\n— Psalm 119:105\n\nThis month taught me that love isn’t just about noticing people—it’s about learning from them.\nAbout how one heart can lead another to grow,\nnot only together,\nbut in faith and understanding.\n\nI carry your words and smiles in my notes,\nand God’s teachings in my heart.\nEverything feels brighter because of you.\n\nMonth five wasn’t just about us—it was about discovering Him through you,\nand finding my own way closer to His light.\n\n— Lloyd`
             },
             { 
                 label: "Month 6", 
                 title: "Loving You Through Joy and Fear", 
                 subtitle: "(Your birthday, your tears, your worries, and my reassurance)",
                 img: "6.jpg",
-                letter: `My Aya,\n\nJune brought something special—your birthday.\nI wanted it to be more than just a day,\nso I planned quietly, paying attention to the little things you mentioned liking.\nThe flowers, the small gifts, the details I remembered from our conversations—\neverything was meant to make you smile.\n\nHappiness isn’t always loud,\nsometimes it’s in noticing,\nand acting on what matters to someone else.\n\nSeeing you happy made all the planning worth it.\nThe way your eyes lit up, the laugh that came naturally,\nand yes—even the little tears you shed sometimes,\nbecause you’re a cry baby (and I loved that about you, kwkw)—\nreminded me how real, sensitive, and beautiful you are.\n\nI know sometimes your thoughts wander to the future,\nand it scares you.\nYou feel pressured because you don’t know how to accept me yet,\nand the past that I have makes you uncertain.\nI understand that, truly.\nAnd I want you to know something that I hope eases your heart:\n\nYou are the only one I’m thinking about.\nNo one else.\nOnly you.\n\nYour fears and hesitations don’t change that.\nThey don’t make me love you less.\nI promise, I will never let your past worries or your doubts take away the care and patience I have for you.\nWe don’t have to rush.\nWe don’t have to have everything figured out.\nI am here, and I will stay.\n\n“Cast all your anxiety on him because he cares for you.”\n— 1 Peter 5:7\n\nThat month taught me something important:\nlove isn’t only about smiles and laughter.\nIt’s about patience,\nunderstanding,\nand being steady even when the other person is afraid.\n\nYour happiness became my goal,\nyour smile became my reward,\nyour tears felt precious,\nand your fears only made me want to love you more gently.\n\nMonth six was a reminder:\nlove is in the thoughtfulness,\nin the attention,\nin honoring the heart that trusts you despite fear,\nand in celebrating every part of someone,\neven the parts they’re still learning to accept.\n\n— Lloyd`
+                letter: `Aya,\n\nJune brought something special—your birthday.\nI wanted it to be more than just a day,\nso I planned quietly, paying attention to the little things you mentioned liking.\nThe flowers, the small gifts, the details I remembered from our conversations—\neverything was meant to make you smile.\n\nHappiness isn’t always loud,\nsometimes it’s in noticing,\nand acting on what matters to someone else.\n\nSeeing you happy made all the planning worth it.\nThe way your eyes lit up, the laugh that came naturally,\nand yes—even the little tears you shed sometimes,\nbecause you’re a cry baby (and I loved that about you, kwkw)—\nreminded me how real, sensitive, and beautiful you are.\n\nI know sometimes your thoughts wander to the future,\nand it scares you.\nYou feel pressured because you don’t know how to accept me yet,\nand the past that I have makes you uncertain.\nI understand that, truly.\nAnd I want you to know something that I hope eases your heart:\n\nYou are the only one I’m thinking about.\nNo one else.\nOnly you.\n\nYour fears and hesitations don’t change that.\nThey don’t make me love you less.\nI promise, I will never let your past worries or your doubts take away the care and patience I have for you.\nWe don’t have to rush.\nWe don’t have to have everything figured out.\nI am here, and I will stay.\n\n“Cast all your anxiety on him because he cares for you.”\n— 1 Peter 5:7\n\nThat month taught me something important:\nlove isn’t only about smiles and laughter.\nIt’s about patience,\nunderstanding,\nand being steady even when the other person is afraid.\n\nYour happiness became my goal,\nyour smile became my reward,\nyour tears felt precious,\nand your fears only made me want to love you more gently.\n\nMonth six was a reminder:\nlove is in the thoughtfulness,\nin the attention,\nin honoring the heart that trusts you despite fear,\nand in celebrating every part of someone,\neven the parts they’re still learning to accept.\n\n— Lloyd`
             },
             { 
                 label: "Month 7", 
                 title: "When We Almost Fell Apart", 
                 subtitle: "(Mistakes, reflection, regret, and choosing change)",
                 img: "7.jpg",
-                letter: `My Aya,\n\nMonth seven was the hardest one to write.\nIt was the month where things almost fell apart—\nnot because love was missing,\nbut because I failed to protect it.\n\nI did something terrible.\nSomething I thought was normal,\nbut for you, it was hurtful and disgusting.\nAnd the truth is—I was wrong.\n\nThere is no excuse for it.\n\nI reflected deeply on what I did,\nand I finally understood something important:\njust because something feels common to the world\ndoesn’t mean it is right,\nespecially when it hurts the person you care about.\n\nNot everything accepted by many\nis acceptable in love.\n\nWhat hurt me most wasn’t just my mistake—\nit was knowing that I made you doubt my sincerity.\nI made you question whether my feelings were genuine.\nI made you feel like I was playing with you,\nlike what I did for you wasn’t real.\n\nAnd that breaks me—\nbecause everything I’ve done for you came from truth.\nI would never do something just to ruin what we have.\nI would never hurt you on purpose.\nAnd I would never play with someone\nI see a future with.\n\nI made you feel unsafe.\nI made you feel insecure.\nAnd I know that my past only made those fears louder.\nFor that, I am deeply sorry.\n\n“The sacrifices of God are a broken spirit;\na broken and contrite heart, O God, you will not despise.”\n— Psalm 51:17\n\nI regret what I did before—truly.\nAnd before I even entered this kind of relationship,\nI had already made a decision within myself\nto leave those things behind.\nThat month forced me to confront my actions fully,\nnot lightly, not defensively,\nbut honestly.\n\nI admit it:\nwhat I did was wrong.\n\nAnd I don’t just mention reflection—\nI lived it.\nI changed.\nAnd I promise, with certainty,\nI will never do those things again.\n\nRepentance isn’t words,\nit’s direction.\n\nI don’t want to be someone\nwho brings fear into your life.\nI want to be someone\nwho brings you closer to the faith you’ve always wanted,\nthe peace you’ve always prayed for,\nand the family you’ve always dreamed of.\n\nI want to grow—\nnot ahead of you,\nnot behind you,\nbut by your side.\n\nI was sure about you then,\nand I am sure now.\nAnd I would do anything\nto protect what we have\nand who you are.\n\n“Create in me a clean heart, O God,\nand renew a steadfast spirit within me.”\n— Psalm 51:10\n\nMonth seven didn’t break us—\nit revealed me.\nAnd I choose to become better,\nnot just for you,\nbut before God.\n\n— Lloyd`
+                letter: `Aya,\n\nMonth seven was the hardest one to write.\nIt was the month where things almost fell apart—\nnot because love was missing,\nbut because I failed to protect it.\n\nI did something terrible.\nSomething I thought was normal,\nbut for you, it was hurtful and disgusting.\nAnd the truth is—I was wrong.\n\nThere is no excuse for it.\n\nI reflected deeply on what I did,\nand I finally understood something important:\njust because something feels common to the world\ndoesn’t mean it is right,\nespecially when it hurts the person you care about.\n\nNot everything accepted by many\nis acceptable in love.\n\nWhat hurt me most wasn’t just my mistake—\nit was knowing that I made you doubt my sincerity.\nI made you question whether my feelings were genuine.\nI made you feel like I was playing with you,\nlike what I did for you wasn’t real.\n\nAnd that breaks me—\nbecause everything I’ve done for you came from truth.\nI would never do something just to ruin what we have.\nI would never hurt you on purpose.\nAnd I would never play with someone\nI see a future with.\n\nI made you feel unsafe.\nI made you feel insecure.\nAnd I know that my past only made those fears louder.\nFor that, I am deeply sorry.\n\n“The sacrifices of God are a broken spirit;\na broken and contrite heart, O God, you will not despise.”\n— Psalm 51:17\n\nI regret what I did before—truly.\nAnd before I even entered this kind of relationship,\nI had already made a decision within myself\nto leave those things behind.\nThat month forced me to confront my actions fully,\nnot lightly, not defensively,\nbut honestly.\n\nI admit it:\nwhat I did was wrong.\n\nAnd I don’t just mention reflection—\nI lived it.\nI changed.\nAnd I promise, with certainty,\nI will never do those things again.\n\nRepentance isn’t words,\nit’s direction.\n\nI don’t want to be someone\nwho brings fear into your life.\nI want to be someone\nwho brings you closer to the faith you’ve always wanted,\nthe peace you’ve always prayed for,\nand the family you’ve always dreamed of.\n\nI want to grow—\nnot ahead of you,\nnot behind you,\nbut by your side.\n\nI was sure about you then,\nand I am sure now.\nAnd I would do anything\nto protect what we have\nand who you are.\n\n“Create in me a clean heart, O God,\nand renew a steadfast spirit within me.”\n— Psalm 51:10\n\nMonth seven didn’t break us—\nit revealed me.\nAnd I choose to become better,\nnot just for you,\nbut before God.\n\n— Lloyd`
             },
             { 
                 label: "Month 8", 
                 title: "Tested Feelings and Honest Love", 
                 subtitle: "(Doubt, forgiveness, emotions, and still choosing each other)",
                 img: "8.jpg",
-                letter: `My Aya,\n\nMonth eight was full of emotions.\nIt was Girlfriend’s Day, and even though we weren’t official yet,\nI still greeted you—calling myself your man, Lloyd—\nand I was genuinely happy that day.\n\nThat day was even more special because you were sending so many photos of yourself.\nYou looked so beautiful in every single one,\nand I couldn’t help but smile from my heart.\nI even printed those pictures,\nso that every time I see them, I would remember:\nI have you in my life,\nand I would do anything—and truly believe I can do anything—for us.\n\nBut I also understand that there were days when your heart was full of questions:\nWas I genuine?\nWas my faith real?\nWere my feelings for you true?\n\nI get it. I really do.\nBecause of what I did before, it made you doubt me.\nYou wondered if I was pretending.\nBut I wasn’t.\nI didn’t study the Bible to impress anyone—\nI wanted to be God-centered in our relationship.\nI wanted our love to be built on truth and faith.\n\nI know at times it felt like gaslighting,\nand I can’t blame you for thinking that.\nI made mistakes before—messages shared, words written, online behaviors that slipped out unintentionally—\nall of it in the past.\nAnd that’s why I chose not to share our moments in month one:\nbecause I wanted to focus on us, not on what others would see or think.\n\nLove isn’t about perfection.\nIt’s about learning, reflecting, and choosing each other every day.\n\nThis month, we fought.\nWe forgave.\nWe judged.\nWe argued.\nBut every step led to forgiveness—not forgetting what happened,\nbut moving forward, stronger and wiser.\n\n“Be kind and compassionate to one another, forgiving each other, just as in Christ God forgave you.”\n— Ephesians 4:32\n\nAya, I never intended to hurt you.\nWhat I always wanted was to grow with you,\nto learn from every mistake,\nto focus on what’s ahead.\n\nMonth eight reminded me that life together isn’t always calm.\nIt’s full of lessons, emotions, and reflections.\nAnd every month we’ve shared has made us grow—not perfect,\nbut stronger, more understanding, and more in love with who we are together.\n\nSeeing your photos, your smiles, your beauty every day reminds me that I have you.\nAnd for us, I will always do anything—and I know I can do anything—to protect what we have.\n\nOur life is full of lessons, and every lesson leads us closer—\ncloser to each other and closer to God.\n\n— Lloyd`
+                letter: `Aya,\n\nMonth eight was full of emotions.\nIt was Girlfriend’s Day, and even though we weren’t official yet,\nI still greeted you—calling myself your man, Lloyd—\nand I was genuinely happy that day.\n\nThat day was even more special because you were sending so many photos of yourself.\nYou looked so beautiful in every single one,\nand I couldn’t help but smile from my heart.\nI even printed those pictures,\nso that every time I see them, I would remember:\nI have you in my life,\nand I would do anything—and truly believe I can do anything—for us.\n\nBut I also understand that there were days when your heart was full of questions:\nWas I genuine?\nWas my faith real?\nWere my feelings for you true?\n\nI get it. I really do.\nBecause of what I did before, it made you doubt me.\nYou wondered if I was pretending.\nBut I wasn’t.\nI didn’t study the Bible to impress anyone—\nI wanted to be God-centered in our relationship.\nI wanted our love to be built on truth and faith.\n\nI know at times it felt like gaslighting,\nand I can’t blame you for thinking that.\nI made mistakes before—messages shared, words written, online behaviors that slipped out unintentionally—\nall of it in the past.\nAnd that’s why I chose not to share our moments in month one:\nbecause I wanted to focus on us, not on what others would see or think.\n\nLove isn’t about perfection.\nIt’s about learning, reflecting, and choosing each other every day.\n\nThis month, we fought.\nWe forgave.\nWe judged.\nWe argued.\nBut every step led to forgiveness—not forgetting what happened,\nbut moving forward, stronger and wiser.\n\n“Be kind and compassionate to one another, forgiving each other, just as in Christ God forgave you.”\n— Ephesians 4:32\n\nAya, I never intended to hurt you.\nWhat I always wanted was to grow with you,\nto learn from every mistake,\nto focus on what’s ahead.\n\nMonth eight reminded me that life together isn’t always calm.\nIt’s full of lessons, emotions, and reflections.\nAnd every month we’ve shared has made us grow—not perfect,\nbut stronger, more understanding, and more in love with who we are together.\n\nSeeing your photos, your smiles, your beauty every day reminds me that I have you.\nAnd for us, I will always do anything—and I know I can do anything—to protect what we have.\n\nOur life is full of lessons, and every lesson leads us closer—\ncloser to each other and closer to God.\n\n— Lloyd`
             },
             { 
                 label: "Month 9", 
                 title: "Moments That Felt Like Us", 
                 subtitle: "(Simple happiness, playful love, and shared time)",
                 img: "9.jpg",
-                letter: `My Aya,\n\nMonth nine was a happy one for me.\nIt felt lighter.\nWe did little girlfriend–boyfriend things,\neven if we weren’t putting labels on it yet.\n\nWe made AI polaroid pictures together,\ndid cute things on Roblox,\nand somehow even the simplest moments felt special.\nThose small, playful memories meant more to me than you know.\n\nLove doesn’t always grow in big moments,\nsometimes it grows in silly ones.\n\nI’ll admit something—\nI was a little tapuhin that month (AHAHAHA, my bad).\nI just wanted a bit of attention.\nNot because you were doing something wrong,\nbut because I missed you.\n\nStill, I understood.\nYou were tired from work.\nPagod ka.\nAnd you’re not really the type who chats a lot.\nSo instead of holding it against you,\nI chose to understand you better.\n\n“Love is patient, love is kind.”\n— 1 Corinthians 13:4\n\nThat month taught me that care isn’t measured by constant messages,\nbut by understanding where the other person is coming from.\nEven when things feel a little cold,\nchoosing patience keeps the warmth alive.\n\nEven in quiet days,\nI chose you.\nEven in tired moments,\nI stayed.\n\nMonth nine reminded me that love doesn’t disappear when it gets quiet—\nsometimes it’s just resting.\n\n— Lloyd`
+                letter: `Aya,\n\nMonth nine was a happy one for me.\nIt felt lighter.\nWe did little girlfriend–boyfriend things,\neven if we weren’t putting labels on it yet.\n\nWe made AI polaroid pictures together,\ndid cute things on Roblox,\nand somehow even the simplest moments felt special.\nThose small, playful memories meant more to me than you know.\n\nLove doesn’t always grow in big moments,\nsometimes it grows in silly ones.\n\nI’ll admit something—\nI was a little tapuhin that month (AHAHAHA, my bad).\nI just wanted a bit of attention.\nNot because you were doing something wrong,\nbut because I missed you.\n\nStill, I understood.\nYou were tired from work.\nPagod ka.\nAnd you’re not really the type who chats a lot.\nSo instead of holding it against you,\nI chose to understand you better.\n\n“Love is patient, love is kind.”\n— 1 Corinthians 13:4\n\nThat month taught me that care isn’t measured by constant messages,\nbut by understanding where the other person is coming from.\nEven when things feel a little cold,\nchoosing patience keeps the warmth alive.\n\nEven in quiet days,\nI chose you.\nEven in tired moments,\nI stayed.\n\nMonth nine reminded me that love doesn’t disappear when it gets quiet—\nsometimes it’s just resting.\n\n— Lloyd`
             },
             { 
                 label: "Month 10", 
                 title: "Choosing You, Even in the Hard Conversations", 
                 subtitle: "(Trust, fear, communication, and commitment)",
                 img: "10.jpg",
-                letter: `My Aya,\n\nMonth ten was heavy—not because love was gone,\nbut because emotions were overflowing\nand both of us were trying to understand each other\nwhile carrying our own fears.\n\nWe argued again.\nYou pushed me toward other girls, calling me single,\neven when I no longer saw myself that way.\nI know you believed I was still single—\nbut in my heart, I wasn’t.\nBecause I already had you,\nand I didn’t want anyone else anymore.\n\nSome commitments are made before they are named.\n\nYou told me you still see who I was before.\nNot because you didn’t see my love or my effort,\nbut because trusting again was hard.\nYou were scared—\nscared to open your heart\nand end up hurting again.\n\nAnd I understand that now.\n\nWe had misunderstandings.\nThere were moments of silence, doubt, and confusion.\nTimes when emotions spoke louder than clarity.\nBut instead of walking away,\nwe chose to talk.\nWe chose to listen.\nAnd we chose to fix what was breaking.\n\n“Everyone should be quick to listen, slow to speak and slow to become angry.”\n— James 1:19\n\nMonth ten taught me something important:\nlove doesn’t survive because people never hurt each other.\nIt survives because they communicate,\nthey forgive,\nand they choose to stay even when it’s hard.\n\nI wasn’t single in my heart.\nI was choosing you.\nEven when trust was fragile,\nI stayed.\n\nI didn’t ask you to forget the past.\nI only hoped that, little by little,\nyou would see who I am now—\nmy effort,\nmy growth,\nmy consistency,\nand my intention to love you right.\n\n“Above all else, guard your heart,\nfor everything you do flows from it.”\n— Proverbs 4:23\n\nMonth ten didn’t end us.\nIt taught us how to face difficult conversations\nwithout letting go of each other.\n\nAnd that, to me,\nis still choosing you.\n\n— Lloyd`
+                letter: `Aya,\n\nMonth ten was heavy—not because love was gone,\nbut because emotions were overflowing\nand both of us were trying to understand each other\nwhile carrying our own fears.\n\nWe argued again.\nYou pushed me toward other girls, calling me single,\neven when I no longer saw myself that way.\nI know you believed I was still single—\nbut in my heart, I wasn’t.\nBecause I already had you,\nand I didn’t want anyone else anymore.\n\nSome commitments are made before they are named.\n\nYou told me you still see who I was before.\nNot because you didn’t see my love or my effort,\nbut because trusting again was hard.\nYou were scared—\nscared to open your heart\nand end up hurting again.\n\nAnd I understand that now.\n\nWe had misunderstandings.\nThere were moments of silence, doubt, and confusion.\nTimes when emotions spoke louder than clarity.\nBut instead of walking away,\nwe chose to talk.\nWe chose to listen.\nAnd we chose to fix what was breaking.\n\n“Everyone should be quick to listen, slow to speak and slow to become angry.”\n— James 1:19\n\nMonth ten taught me something important:\nlove doesn’t survive because people never hurt each other.\nIt survives because they communicate,\nthey forgive,\nand they choose to stay even when it’s hard.\n\nI wasn’t single in my heart.\nI was choosing you.\nEven when trust was fragile,\nI stayed.\n\nI didn’t ask you to forget the past.\nI only hoped that, little by little,\nyou would see who I am now—\nmy effort,\nmy growth,\nmy consistency,\nand my intention to love you right.\n\n“Above all else, guard your heart,\nfor everything you do flows from it.”\n— Proverbs 4:23\n\nMonth ten didn’t end us.\nIt taught us how to face difficult conversations\nwithout letting go of each other.\n\nAnd that, to me,\nis still choosing you.\n\n— Lloyd`
             },
             { 
                 label: "Month 11", 
                 title: "Staying, Even When the Label Changed", 
                 subtitle: "(Effort, patience, and choosing to remain)",
                 img: "11.jpg",
-                letter: `My Aya,\n\nMonth eleven reminded me that love isn’t always loud.\nSometimes, it shows up quietly—\nin effort, in patience, and in choosing to stay\neven when things don’t look the way we hoped.\n\nThat month, you trusted me with something important.\nYou asked me to give a gift to Xian.\n\nIt was raining that day.\nI could’ve waited until tomorrow.\nBut when I felt your mood shift,\nI chose not to wait.\n\nSo I found a way.\nI bought the gift.\nAnd when I saw you smile,\neverything felt worth it.\n\nYou’ve always loved kids—\nthe way your heart softens,\nthe way joy finds you so easily.\nSeeing you happy that day\nbecame one of my happiest moments too.\n\nSometimes love is not about grand gestures,\nbut about showing up when it matters most.\n\nBut month eleven also tested me.\n\nI forgot a promise.\nSomething small to others,\nbut meaningful to you.\nAnd in forgetting, I hurt you.\n\nI didn’t mean to.\nBut intention doesn’t erase impact.\n\nThat month, we grew distant.\nYou chose for us to be friends—\nnot a situationship.\nAnd even though it hurt,\nI respected your decision.\n\nBecause love doesn’t force itself.\nIt honors boundaries.\n\n“Love is patient, love is kind… it always perseveres.”\n— 1 Corinthians 13:4–7\n\nI was disappointed in myself.\nI questioned my worth.\nBut I didn’t walk away.\n\nBecause staying—\neven without certainty,\neven without a label—\nwas still my choice.\n\n“Be strong and take heart,\nall you who hope in the Lord.”\n— Psalm 31:24\n\nMonth eleven taught me this:\nreal love doesn’t disappear when promises fail.\nIt learns.\nIt humbles itself.\nAnd it grows.\n\nEven if we were just friends that month,\nmy heart didn’t change.\n\nI didn’t stay because it was easy.\nI stayed because it was you.\n\n— Lloyd`
+                letter: `Aya,\n\nMonth eleven reminded me that love isn’t always loud.\nSometimes, it shows up quietly—\nin effort, in patience, and in choosing to stay\neven when things don’t look the way we hoped.\n\nThat month, you trusted me with something important.\nYou asked me to give a gift to Xian.\n\nIt was raining that day.\nI could’ve waited until tomorrow.\nBut when I felt your mood shift,\nI chose not to wait.\n\nSo I found a way.\nI bought the gift.\nAnd when I saw you smile,\neverything felt worth it.\n\nYou’ve always loved kids—\nthe way your heart softens,\nthe way joy finds you so easily.\nSeeing you happy that day\nbecame one of my happiest moments too.\n\nSometimes love is not about grand gestures,\nbut about showing up when it matters most.\n\nBut month eleven also tested me.\n\nI forgot a promise.\nSomething small to others,\nbut meaningful to you.\nAnd in forgetting, I hurt you.\n\nI didn’t mean to.\nBut intention doesn’t erase impact.\n\nThat month, we grew distant.\nYou chose for us to be friends—\nnot a situationship.\nAnd even though it hurt,\nI respected your decision.\n\nBecause love doesn’t force itself.\nIt honors boundaries.\n\n“Love is patient, love is kind… it always perseveres.”\n— 1 Corinthians 13:4–7\n\nI was disappointed in myself.\nI questioned my worth.\nBut I didn’t walk away.\n\nBecause staying—\neven without certainty,\neven without a label—\nwas still my choice.\n\n“Be strong and take heart,\nall you who hope in the Lord.”\n— Psalm 31:24\n\nMonth eleven taught me this:\nreal love doesn’t disappear when promises fail.\nIt learns.\nIt humbles itself.\nAnd it grows.\n\nEven if we were just friends that month,\nmy heart didn’t change.\n\nI didn’t stay because it was easy.\nI stayed because it was you.\n\n— Lloyd`
             },
             { 
                 label: "Month 12", 
                 title: "Still Here, Still Choosing", 
                 subtitle: "(Busy lives, quiet connection, and consistency)",
                 img: "12.jpg",
-                letter: `My Aya,\n\nMonth twelve didn’t come with big moments or celebrations.\nIt came quietly—\nwith full days, busy schedules,\nand responsibilities pulling us in different directions.\n\nI was busy with school.\nYou were busy with work,\nand also busy figuring things out for yourself.\nThere were days when time was limited\nand energy was low.\n\nBut even then,\nwe still communicated.\n\nNot always long conversations,\nnot always deep ones—\nbut enough to remind us\nthat we were still here.\n\nSometimes love isn’t about having all the time,\nbut about choosing to stay connected anyway.\n\nWe learned how to understand each other in this season—\nbetween tired days and short talks,\nbetween silence and reassurance.\nEven when life felt heavy,\nwe didn’t disappear from each other’s lives.\n\n“Let us not grow weary in doing good,\nfor at the proper time we will reap a harvest\nif we do not give up.”\n— Galatians 6:9\n\nMonth twelve taught me patience.\nThat not every season is meant for big emotions.\nSome seasons are meant for staying steady.\n\nWe didn’t fall apart.\nWe adjusted.\n\nAnd in that adjustment,\nmy choice stayed the same.\n\nEven when we were busy,\neven when we were tired,\neven when life asked a lot from us—\nI still chose you.\n\n“Commit your way to the Lord;\ntrust in Him and He will act.”\n— Psalm 37:5\n\nOne year didn’t give us all the answers.\nBut it gave us growth, lessons, and faith.\n\nStill here.\nStill choosing.\nStill you.\n\n— Lloyd`
+                letter: `Aya,\n\nMonth twelve didn’t come with big moments or celebrations.\nIt came quietly—\nwith full days, busy schedules,\nand responsibilities pulling us in different directions.\n\nI was busy with school.\nYou were busy with work,\nand also busy figuring things out for yourself.\nThere were days when time was limited\nand energy was low.\n\nBut even then,\nwe still communicated.\n\nNot always long conversations,\nnot always deep ones—\nbut enough to remind us\nthat we were still here.\n\nSometimes love isn’t about having all the time,\nbut about choosing to stay connected anyway.\n\nWe learned how to understand each other in this season—\nbetween tired days and short talks,\nbetween silence and reassurance.\nEven when life felt heavy,\nwe didn’t disappear from each other’s lives.\n\n“Let us not grow weary in doing good,\nfor at the proper time we will reap a harvest\nif we do not give up.”\n— Galatians 6:9\n\nMonth twelve taught me patience.\nThat not every season is meant for big emotions.\nSome seasons are meant for staying steady.\n\nWe didn’t fall apart.\nWe adjusted.\n\nAnd in that adjustment,\nmy choice stayed the same.\n\nEven when we were busy,\neven when we were tired,\neven when life asked a lot from us—\nI still chose you.\n\n“Commit your way to the Lord;\ntrust in Him and He will act.”\n— Psalm 37:5\n\nOne year didn’t give us all the answers.\nBut it gave us growth, lessons, and faith.\n\nStill here.\nStill choosing.\nStill you.\n\n— Lloyd`
             },
             { 
-                label: "The final message for this month :3", 
+                label: "The End", 
                 title: "After Twelve Months — Still My Choice", 
                 subtitle: "(Open to read the final message)",
                 img: "last.jpg", 
-                letter: `MyAya,\n\nIf someone asked me what this year was like,\nI wouldn’t say it was perfect.\nI wouldn’t say it was easy.\nBut I would say it was real.\n\nTwelve months ago,\nwe were just two people getting to know each other—\ntwo lives slowly crossing paths,\nnot knowing how deeply those paths would intertwine.\n\nMonth by month,\nwe learned.\n\nWe learned how to talk,\nhow to listen,\nhow to misunderstand each other,\nand how to come back from it.\n\nSome months were light and joyful—\nfull of laughter, small jokes, late-night calls,\nand moments that made my heart feel full.\n\nSome months were heavy—\nfull of doubts, fears, tears, and questions\nwe didn’t always know how to answer.\n\nBut through all twelve months,\none thing stayed the same:\n\nI stayed.\n\nNot because I had to.\nNot because it was convenient.\nBut because I chose to.\n\nLove is not proven in perfect moments,\nbut in the decision to remain when things become unclear.\n\nThere were times I hurt you.\nTimes I failed to protect my words,\nmy promises,\nor your heart.\n\nAnd for those moments,\nI carry responsibility—not excuses.\n\nBut there were also moments where I grew.\nWhere I reflected.\nWhere I changed, not for attention,\nnot for appearances,\nbut because I wanted to become someone\nwho could love you better.\n\nYou didn’t just become someone I cared about—\nyou became someone who led me closer to God.\n\nBecause of you,\nI learned to pray more honestly.\nTo question my faith more deeply.\nTo want a future built not just on feelings,\nbut on values, commitment, and purpose.\n\n“Trust in the Lord with all your heart\nand lean not on your own understanding.”\n— Proverbs 3:5\n\nWe didn’t always walk at the same pace.\nThere were seasons where I was busy with school,\nand you were busy with work and with yourself.\nTimes when messages were short,\ncalls were fewer,\nand energy was low.\n\nBut even then,\nwe didn’t disappear.\n\nWe still chose to communicate.\nTo check in.\nTo stay present in the ways we could.\n\nAnd that taught me something important:\n\nLove doesn’t require constant closeness,\nit requires consistency.\n\nThere were moments when you were scared—\nscared because of my past,\nscared because trusting again felt risky,\nscared because opening your heart meant vulnerability.\n\nAnd I don’t blame you for that.\n\n“Above all else, guard your heart,\nfor everything you do flows from it.”\n— Proverbs 4:23\n\nI never asked you to forget the past.\nI only hoped that, over time,\nyou would see who I am now—\nnot through words alone,\nbut through effort, patience, and staying.\n\nThis year didn’t turn us into something perfect.\nIt turned us into something honest.\n\nWe fought.\nWe forgave.\nWe learned.\nWe adjusted.\nWe stayed.\n\nAnd staying—\neven without certainty,\neven without a clear label at times—\nwas still my choice.\n\n“Let us not grow weary in doing good,\nfor at the proper time we will reap a harvest\nif we do not give up.”\n— Galatians 6:9\n\nIf these twelve months taught me anything,\nit’s that love isn’t proven by titles,\nannouncements,\nor grand gestures alone.\n\nIt’s proven in the quiet decisions:\nto understand instead of accuse,\nto wait instead of rush,\nto grow instead of repeat old mistakes.\n\nAnd after twelve months,\nif I had to choose again—\n\nI would still choose you.\n\nNot because I know exactly how the future will look,\nbut because I know who I want to walk toward it with.\n\nWhatever comes next—\nwhether it takes time,\nhealing,\nor patience—\n\nI’m here.\n\nStill learning.\nStill growing.\nStill choosing you.\n\n— Lloyd 🤍`
+                letter: `Aya,\n\nIf someone asked me what this year was like,\nI wouldn’t say it was perfect.\nI wouldn’t say it was easy.\nBut I would say it was real.\n\nTwelve months ago,\nwe were just two people getting to know each other—\ntwo lives slowly crossing paths,\nnot knowing how deeply those paths would intertwine.\n\nMonth by month,\nwe learned.\n\nWe learned how to talk,\nhow to listen,\nhow to misunderstand each other,\nand how to come back from it.\n\nSome months were light and joyful—\nfull of laughter, small jokes, late-night calls,\nand moments that made my heart feel full.\n\nSome months were heavy—\nfull of doubts, fears, tears, and questions\nwe didn’t always know how to answer.\n\nBut through all twelve months,\none thing stayed the same:\n\nI stayed.\n\nNot because I had to.\nNot because it was convenient.\nBut because I chose to.\n\nLove is not proven in perfect moments,\nbut in the decision to remain when things become unclear.\n\nThere were times I hurt you.\nTimes I failed to protect my words,\nmy promises,\nor your heart.\n\nAnd for those moments,\nI carry responsibility—not excuses.\n\nBut there were also moments where I grew.\nWhere I reflected.\nWhere I changed, not for attention,\nnot for appearances,\nbut because I wanted to become someone\nwho could love you better.\n\nYou didn’t just become someone I cared about—\nyou became someone who led me closer to God.\n\nBecause of you,\nI learned to pray more honestly.\nTo question my faith more deeply.\nTo want a future built not just on feelings,\nbut on values, commitment, and purpose.\n\n“Trust in the Lord with all your heart\nand lean not on your own understanding.”\n— Proverbs 3:5\n\nWe didn’t always walk at the same pace.\nThere were seasons where I was busy with school,\nand you were busy with work and with yourself.\nTimes when messages were short,\ncalls were fewer,\nand energy was low.\n\nBut even then,\nwe didn’t disappear.\n\nWe still chose to communicate.\nTo check in.\nTo stay present in the ways we could.\n\nAnd that taught me something important:\n\nLove doesn’t require constant closeness,\nit requires consistency.\n\nThere were moments when you were scared—\nscared because of my past,\nscared because trusting again felt risky,\nscared because opening your heart meant vulnerability.\n\nAnd I don’t blame you for that.\n\n“Above all else, guard your heart,\nfor everything you do flows from it.”\n— Proverbs 4:23\n\nI never asked you to forget the past.\nI only hoped that, over time,\nyou would see who I am now—\nnot through words alone,\nbut through effort, patience, and staying.\n\nThis year didn’t turn us into something perfect.\nIt turned us into something honest.\n\nWe fought.\nWe forgave.\nWe learned.\nWe adjusted.\nWe stayed.\n\nAnd staying—\neven without certainty,\neven without a clear label at times—\nwas still my choice.\n\n“Let us not grow weary in doing good,\nfor at the proper time we will reap a harvest\nif we do not give up.”\n— Galatians 6:9\n\nIf these twelve months taught me anything,\nit’s that love isn’t proven by titles,\nannouncements,\nor grand gestures alone.\n\nIt’s proven in the quiet decisions:\nto understand instead of accuse,\nto wait instead of rush,\nto grow instead of repeat old mistakes.\n\nAnd after twelve months,\nif I had to choose again—\n\nI would still choose you.\n\nNot because I know exactly how the future will look,\nbut because I know who I want to walk toward it with.\n\nWhatever comes next—\nwhether it takes time,\nhealing,\nor patience—\n\nI’m here.\n\nStill learning.\nStill growing.\nStill choosing you.\n\n— Lloyd 🤍`
             }
         ];
 
