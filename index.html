@@ -16,11 +16,11 @@
             background-size: 20px 20px;
             margin: 0;
             font-family: 'Nunito', sans-serif;
-            overflow-x: hidden; /* Prevent scrolling while start screen is up */
+            overflow-x: hidden;
             color: #333;
         }
 
-        /* --- START SCREEN (New Feature) --- */
+        /* --- START SCREEN (Dedication) --- */
         #start-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -30,15 +30,26 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
+            padding: 20px;
             transition: opacity 1s ease;
+        }
+
+        .dedication-text {
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.3rem;
+            color: #555;
+            margin-bottom: 30px;
+            max-width: 500px;
+            line-height: 1.6;
         }
 
         .start-btn {
             background: #ff6b6b;
             color: white;
             font-family: 'Indie Flower', cursive;
-            font-size: 1.5rem;
-            padding: 15px 40px;
+            font-size: 1.2rem;
+            padding: 12px 35px;
             border: none;
             border-radius: 50px;
             cursor: pointer;
@@ -71,7 +82,7 @@
             margin: 10px 0;
             opacity: 0;
             animation: fadeIn 2s forwards;
-            animation-play-state: paused; /* Wait for start */
+            animation-play-state: paused;
         }
 
         .intro-text:nth-child(1) { animation-delay: 0.5s; }
@@ -84,7 +95,7 @@
             color: #888;
             opacity: 0;
             animation: fadeIn 2s forwards 3.5s;
-            animation-play-state: paused; /* Wait for start */
+            animation-play-state: paused;
         }
 
         @keyframes fadeIn {
@@ -158,9 +169,12 @@
                 justify-content: center;
                 padding-left: 30px;
             }
+            .dedication-text {
+                font-size: 1.1rem;
+            }
         }
 
-        /* --- ENVELOPE STYLES --- */
+        /* --- ENVELOPE STYLES (FIXED) --- */
         .envelope-wrapper {
             display: flex;
             flex-direction: column;
@@ -218,7 +232,9 @@
         .letter {
             position: absolute; bottom: 0; left: 50%;
             transform: translateX(-50%);
-            width: 260px; height: 160px;
+            /* Reduced width slightly to ensure it fits inside pocket without sides peeking */
+            width: 240px; 
+            height: 160px;
             background: white; border: 1px solid #eee;
             padding: 20px; box-sizing: border-box;
             transition: bottom 0.5s ease;
@@ -227,12 +243,25 @@
             display: flex; align-items: center; justify-content: center;
             text-align: center; font-size: 1rem; color: #555;
             font-family: 'Indie Flower', cursive;
+            overflow: hidden; /* Ensures no text spills out */
         }
 
-        .letter p { opacity: 0; transition: opacity 0.3s ease; }
+        /* FIX: Content inside letter is invisible and pushed down until opened */
+        .letter-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
         .envelope-wrapper.open .flap { transform: rotateX(180deg); z-index: 0; }
         .envelope-wrapper.open .letter { bottom: 100px; z-index: 4; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .envelope-wrapper.open .letter p { opacity: 1; transition-delay: 0.4s; }
+        
+        /* FIX: Content reveals only when open */
+        .envelope-wrapper.open .letter .letter-content { 
+            opacity: 1; 
+            transform: translateY(0); 
+            transition-delay: 0.4s; 
+        }
 
         /* --- PHOTO FRAME STYLES --- */
         .photo-frame {
@@ -347,7 +376,7 @@
             cursor: pointer;
             z-index: 1000;
             font-size: 1.5rem;
-            display: none; /* Hide until music starts */
+            display: none; 
         }
     </style>
 </head>
@@ -358,14 +387,24 @@
     </audio>
 
     <div id="start-screen">
-        <h1 style="font-family: 'Indie Flower', cursive; font-size: 3rem; margin-bottom: 20px;">For my Aya :3</h1>
+        <div class="dedication-text">
+            My Aya 🤍<br><br>
+            This is my surprise for you today—<br>
+            the day I met you.<br><br>
+            I wanted to share with you what this year has meant to me,<br>
+            written month by month, from my heart.<br><br>
+            Take your time,<br>
+            and read it whenever you feel ready.<br><br>
+            These are my thoughts, my feelings,<br>
+            and my gratitude for every moment with you.
+        </div>
         <button class="start-btn" onclick="startExperience()">Tap to Open ❤️</button>
     </div>
 
     <div id="intro-container">
         <div class="intro-text">1 Year of Us</div>
         <div class="intro-text">1 Year of Knowing</div>
-        <div class="intro-text">Still here. Still choosing.</div>
+        <div class="intro-text">Still choosing you — always.</div>
         
         <div class="scroll-hint">
             (Scroll Down &darr;)
@@ -513,7 +552,7 @@
             // 3. Allow Animations to Run
             introTexts.forEach(el => el.style.animationPlayState = 'running');
             scrollHint.style.animationPlayState = 'running';
-            document.body.style.overflowX = 'hidden'; // Restore scrolling if needed
+            document.body.style.overflowX = 'hidden'; 
 
             // 4. Remove Start Screen after animation
             setTimeout(() => {
@@ -582,8 +621,9 @@
                 openModal(page);
             };
             
+            // Wrapped content in a div for animation
             letter.innerHTML = `
-                <div style="width: 100%;">
+                <div class="letter-content" style="width: 100%;">
                     <p style="margin: 0; font-weight: bold; font-size: 1.1rem; opacity: 1;">${page.title}</p>
                     <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #666; opacity: 1;">${page.subtitle}</p>
                     <br>
